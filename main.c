@@ -116,13 +116,9 @@ int delete_node(skip_list *sl, valuetype value)
 	//降到0层
 	do
 	{
-		if (location->next[j] == NULL || location->next[j]->value >= value)
+		if (location->next[j] == NULL)
 		{
-			if (location->next[j]->value == value)
-			{
-				update[i] = location;
-				i += 1;
-			}
+			
 			j -= 1;
 			/*
 			if (location->next[j] != NULL)
@@ -131,7 +127,16 @@ int delete_node(skip_list *sl, valuetype value)
 			}
 			*/
 		}
-		else if (location->next[j]->value < value && location->next[j] != NULL)
+		else if (location->next[j]->value >= value)
+		{
+			if (location->next[j]->value == value)
+			{
+				update[i] = location;
+				i += 1;
+			}
+			j -= 1;
+		}
+		else if (location->next[j] != NULL && location->next[j]->value < value)
 		{
 			location = location->next[j];
 		}
@@ -166,7 +171,7 @@ int delete_node(skip_list *sl, valuetype value)
 //查找节点查到了返回1
 int search_node(skip_list *sl, valuetype value)
 {
-	Node *update[MAXLEVEL];//这个数组是用来保存下降的节点的；
+	//Node *update[MAXLEVEL];//这个数组是用来保存下降的节点的；
 	Node *location = NULL;//这个节点是用来记录当前的下降节点的；
 	int j = MAXLEVEL - 1;//j表示层数。
 	int i = 0;//用来给update计数。
